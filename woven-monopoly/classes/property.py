@@ -16,7 +16,7 @@ class Property:
         self.price = price
         self.colour = colour
         self.owner = owner
-        self.owns_color_set = False
+        self.owns_colour_set = False
         
 
 

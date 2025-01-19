@@ -10,37 +10,40 @@ from classes.board import Board
 # Constants
 INITIAL_MONEY = 16
 PLAYERS = [
-    Player(0, "Peter", INITIAL_MONEY),
-    Player(1, "Billy", INITIAL_MONEY),
-    Player(2, "Charlotte", INITIAL_MONEY),
-    Player(3, "Sweedal", INITIAL_MONEY)
+    "Peter",
+    "Billy",
+    "Charlotte",
+    "Sweedal"
 ]
 
-def load_board():
+def load_players():
+    """Load the players from the constants provided"""
+    players = []
+    for i in range(len(PLAYERS)):
+        players.append(Player(i, PLAYERS[i], INITIAL_MONEY))
+    return players
+
+def load_board(players: list[Player]):
     """Load the board configuration from board.json"""
-    try:
-        with open("../board.json", "r") as f:
-            board_data = json.load(f)
+
+    with open("../board.json", "r") as f:
+        board_data = json.load(f)
             
-        # Convert JSON data to Property objects
-        properties = []
-        for i, prop_data in enumerate(board_data):
-            properties.append(
-                Property(
-                    id=i,
-                    name=prop_data["name"],
-                    type=prop_data["type"],
-                    price=prop_data.get("price"),  # Using get() for optional fields
-                    colour=prop_data.get("colour"),
-                )
+    # Convert JSON data to Property objects
+    properties = []
+    for i, prop_data in enumerate(board_data):
+        properties.append(
+            Property(
+                id=i,
+                name=prop_data["name"],
+                type=prop_data["type"],
+                price=prop_data.get("price"),  # Using get() for optional fields
+                colour=prop_data.get("colour"),
             )
-        
-        return Board(properties, PLAYERS)
+        )
     
-    except FileNotFoundError:
-        raise FileNotFoundError("board.json not found")
-    except json.JSONDecodeError:
-        raise ValueError("Invalid JSON in board.json")
+    return Board(properties, players)
+
     
 def load_dice_rolls(game_number: int):
     """Load the dice rolls from dice_rolls.json"""    
@@ -76,15 +79,19 @@ def start_game(board: Board, dice_rolls: list[int]):
 
 if __name__ == "__main__":
     # Initialise the board and dice rolls
-    board = load_board()
+    players = load_players()
+    board = load_board(players)
     
     # Play game 1 with rolls_1.json
     dice_rolls = load_dice_rolls(1)
     print("Game 1:")
     start_game(board, dice_rolls)
     
+    # Reset the board and players
+    players = load_players()
+    board = load_board(players)
+    
     # Play game 2 with rolls_2.json
-    board = load_board()
     dice_rolls = load_dice_rolls(2)
     print("Game 2:")
     start_game(board, dice_rolls)
