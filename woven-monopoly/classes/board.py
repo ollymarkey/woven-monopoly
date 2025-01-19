@@ -33,7 +33,9 @@ class Board:
     def _buy_property(self, player: Player, property: Property) -> None:
         """Buy a property"""
         player.money -= property.price
-        property.owner = player.name
+        property.owner = player.id
+        
+        print(f"{self.players[player.id].name} bought {property.name}")
         
         # Check if properties of the same colour are owned by the same player
         # Doing this here means it doesn't have to be done every time someone pays rent
@@ -43,13 +45,15 @@ class Board:
     def _pay_rent(self, player: Player, property: Property) -> None:
         """Pay rent to the owner of a property"""
         rent_amount = property.price
+        property_owner = self.players[property.owner]
         
         # Check if properties of the same colour are owned by the same player
         if property.owns_color_set:
             rent_amount *= 2
 
+        print(f"{player.name} pays {rent_amount} to {property_owner.name}")
         player.money -= rent_amount
-        self.players[property.owner].money += rent_amount
+        property_owner.money += rent_amount
         
         if player.money <= 0:
             self.player_bankrupt = True
