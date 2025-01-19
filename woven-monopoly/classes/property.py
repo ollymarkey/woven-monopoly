@@ -6,9 +6,9 @@ class Property:
             id: int,
             name: str,
             type: str,
-            price: Optional[str] = None,
+            price: Optional[int] = None,
             colour: Optional[str] = None,
-            owner: Optional[str] = None
+            owner: Optional[int] = None
         ):
         self.id = id
         self.name = name
@@ -16,6 +16,7 @@ class Property:
         self.price = price
         self.colour = colour
         self.owner = owner
+        self.owns_color_set = False
         
 
 
