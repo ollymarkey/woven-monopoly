@@ -67,15 +67,16 @@ def start_game(board: Board, dice_rolls: list[int]):
     
     # Handle the end of the game
     print("Game over!")
-    winner = board.players[0]
+    winner = [board.players[0]]
     for player in board.players:
         print(f"{player.name} has ${player.money} left")
-        if player.money > winner.money:
-            winner = player
+        if player.money > winner[0].money:
+            winner = [player]
+        elif player.money == winner[0].money:
+            winner.append(player)
     
-    print(f"{winner.name} wins with ${winner.money} left !!!")
+    print(f"{', '.join([player.name for player in winner])} wins with ${winner[0].money} left !!!")
     
-    pass
 
 if __name__ == "__main__":
     # Initialise the board and dice rolls
